@@ -46,6 +46,75 @@ class linkedList {
     }
   }
 
+  // Insert Before
+  /* Inserts a new node before a node containing the key.*/
+  insertBefore(key, itemToInsert) {
+    // if head is null (no items in list)
+    if (this.head === null) {
+      return;
+    }
+    // if head value equal to key (key is first item in list), call insert first method
+    if (this.head.value === key) {
+      this.insertFirst(itemToInsert);
+      return;
+    }
+
+    let prevNode = null;
+    let currNode = this.head;
+    //move prevNode & currNode to following one each time
+    while (currNode !== null && currNode.value !== key) {
+      prevNode = currNode;
+      currNode = currNode.next;
+    }
+    // if currNode is null (end of list), then did not find the node to start with
+    if (currNode === null) {
+      console.log('Node not found to insert');
+      return;
+    }
+    //insert between current and previous
+    prevNode.next = new _Node(itemToInsert, currNode);
+  }
+
+  // Insert After function
+  insertAfter(key, itemToInsert) {
+    let tempNode = this.head;
+    // if head is null (no items in list)
+    if (tempNode === null) {
+      return;
+    }
+
+    // while tempnode is not null & tempnode value not equal to key
+    while (tempNode !== null && tempNode.value !== key) {
+      // set tempnode to tempnode.next (move to next item and set)
+      tempNode = tempNode.next;
+    }
+
+    // when tempNode.value is equal to key and tempNode not null,
+    if (tempNode !== null) {
+      // call function _Node to create a new node
+      tempNode.next = new _Node(itemToInsert, tempNode.next);
+    }
+  }
+
+
+  // Insert at
+  insertAt(position, itemToInsert){
+
+    // Throw error if position entered is less than zero.
+    if(position < 0){
+        throw new Error('Position error, position is less than 0.');
+    }
+
+    // if position is 0, then call insertFirst method (itemToInsert will be place at start of list)
+    if(position === 0){
+        this.insertFirst(itemToInsert);
+    }
+    // Find position
+    else{
+        
+    }
+  }
+
   // Remove function
   remove(item) {
     // if list is empty
@@ -62,11 +131,11 @@ class linkedList {
     // Keep track of previous
     let previousNode = this.head;
 
-    // while currNode not null (currNode not first) and currNode.value not item
+    // while currNode not null (currNode not last) and currNode.value not item
     while (currNode !== null && currNode.value !== item) {
       // save the previous node
       previousNode = currNode;
-      currNode = this.head;
+      currNode = currNode.next;
     }
 
     if (currNode === null) {
@@ -101,3 +170,52 @@ class linkedList {
     return currNode;
   }
 }
+
+/* Problem 2: Create a singly linked list   */
+
+/*
+Write a function main. Within the function, using the linked list class above, create a linked list with the name SLL and add the following items to your linked list: Apollo, Boomer, Helo, Husker, Starbuck.
+Add Tauhida to the list.
+Remove squirrel from the list.
+Implement a function called insertBefore() in the class that inserts a new node before a given node containing a key.
+Implement a function called insertAfter() in the class that inserts a new node after a node containing the key.
+Implement a function called insertAt() that inserts an item at a specific position in the linked list.
+Add Athena before Boomer using your insertBefore() function.
+Add Hotdog after Helo using the insertAfter() method.
+Using the insertAt() method insert Kat in the 3rd position of the list.
+Remove Tauhida from the list.
+*/
+
+function displayList(list) {
+  let currNode = list.head;
+  while (currNode !== null) {
+    console.log(currNode.value);
+    currNode = currNode.next;
+  }
+}
+
+function main() {
+  // Create a linked list w/name SLL
+  let SLL = new linkedList();
+
+  // Add to list: Apollo, Boomer, Helo, Husker, Starbuck
+  SLL.insertFirst('Apollo');
+  SLL.insertLast('Boomer');
+  SLL.insertLast('Helo');
+  SLL.insertLast('Husker');
+  SLL.insertLast('Starbuck');
+
+  // Add Tauhida to the list.
+  SLL.insertLast('Tauhida');
+
+  // Remove squirrel from the list.
+  SLL.remove('Squirrel');
+
+  SLL.insertBefore('Boomer', 'Athena');
+
+  SLL.insertAfter('Helo', 'Hotdog');
+
+  displayList(SLL);
+}
+
+main();
